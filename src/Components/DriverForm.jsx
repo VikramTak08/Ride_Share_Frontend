@@ -1,29 +1,25 @@
 /* eslint-disable no-unused-vars */
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import simplify from 'simplify-js';
+import simplify from "simplify-js";
 import { useState } from "react";
 import axios from "axios";
 
-const DriverForm = () => 
-  {
-const location= useLocation();
-const navigate = useNavigate();
-const {startLocation,destinationLocation,waypoints}=location.state||{};
+const DriverForm = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { startLocation, destinationLocation, waypoints } =
+    location.state || {};
 
-console.log("startLocation :", startLocation);
-console.log("destinationLocation :", destinationLocation);
-console.log("waypoints :", waypoints);
+  console.log("startLocation :", startLocation);
+  console.log("destinationLocation :", destinationLocation);
+  console.log("waypoints :", waypoints);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [seats, setSeats] = useState(1);
   const [vehicle, setVehicle] = useState("Bike");
-  const [fare, setFare] = useState('');
-
-
-
-
+  const [fare, setFare] = useState("");
 
   // const [driver, setDriver] = useState({
   //   startLocation: "",
@@ -44,19 +40,21 @@ console.log("waypoints :", waypoints);
   //     [name]:value,
   //   })
   // };
- 
-  const handleSubmit = async (e) => {
 
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Convert waypoints to a format `simplify-js` expects
-const points = waypoints.map(coord => ({ x: coord[0], y: coord[1] }));
+    const points = waypoints.map((coord) => ({ x: coord[0], y: coord[1] }));
 
-// Simplify points (tolerance 0.0001 can be adjusted based on precision needed)
-const simplifiedPoints = simplify(points, 0.00005);
+    // Simplify points (tolerance 0.0001 can be adjusted based on precision needed)
+    const simplifiedPoints = simplify(points, 0.00005);
 
-// Convert back to coordinates array format
-const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
-    
+    // Convert back to coordinates array format
+    const simplifiedWaypoints = simplifiedPoints.map((point) => [
+      point.x,
+      point.y,
+    ]);
+
     const driverData = {
       name,
       phone,
@@ -70,10 +68,9 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
         coordinates: simplifiedWaypoints.map(([lat, lng]) => [lng, lat]), // Array of coordinates in GeoJSON format
       },
     };
-   
+
     // try {
-         
-         
+
     //       const response= fetch(`http://localhost:5000/api/drivers/save-driver`, {
     //         method:"POST",
     //         headers:{
@@ -90,39 +87,30 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
     //       console.error("There was an error saving the data!", error);
     //     }
 
-
-    
-
     try {
-  const response = await fetch(`https://ride-share-backend.onrender.com/api/drivers/save-driver`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(driverData),
-  });
+      const BASE_URL = import.meta.env.VITE_API_URL;
 
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
+      const response = await fetch(`${BASE_URL}/api/drivers/save-driver`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(driverData),
+      });
 
-  const result = await response.json();
-  console.log(result);
-  alert("Driver data saved successfully!");
-  // Navigate or reset form here
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-} catch (error) {
-  console.error("Error saving driver:", error);
-  alert("Something went wrong. Please try again.");
-}
-     };
-
-     
-
-
-  
-  
-  
+      const result = await response.json();
+      console.log(result);
+      alert("Driver data saved successfully!");
+      // Navigate or reset form here
+    } catch (error) {
+      console.error("Error saving driver:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div className=" min-h-screen p-1 bg-gray-200   ">
@@ -139,15 +127,14 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
                 Starting Location :
               </label>
               <input
-                 required
-                 readOnly
+                required
+                readOnly
                 type="text"
                 id="startLocation"
                 name="startLocation"
                 value={startLocation}
-               
                 // className="mt-1 block w-full h-8 text-xl pl-3 text-black border-gray-300 border-b-2 focus:outline-none focus:ring-0   shadow-sm"
-              className="border bg-gray-200 border-gray-200 rounded-lg p-2 mt-1 w-full text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="border bg-gray-200 border-gray-200 rounded-lg p-2 mt-1 w-full text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
 
@@ -159,25 +146,21 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
                 Destination Location :
               </label>
               <input
-              required
-              readOnly
+                required
+                readOnly
                 type="text"
                 id="destinationLocation"
                 name="destinationLocation"
                 value={destinationLocation}
-                
                 className="border bg-gray-200 border-gray-200 rounded-lg p-2 mt-1 w-full text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
             <div>
-              <label
-                htmlFor="name"
-                className="block text-xl font-medium "
-              >
+              <label htmlFor="name" className="block text-xl font-medium ">
                 Name :
               </label>
               <input
-              required
+                required
                 type="text"
                 id="name"
                 name="name"
@@ -187,14 +170,11 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
               />
             </div>
             <div>
-              <label
-                htmlFor="fare"
-                className="block text-xl font-medium "
-              >
+              <label htmlFor="fare" className="block text-xl font-medium ">
                 Phone No :
               </label>
               <input
-              required
+                required
                 type="number"
                 id="phone"
                 name="phone"
@@ -212,15 +192,14 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
                 Vehicle Type :
               </label>
               <input
-              required
-              placeholder="type Car,Bike,Bus etc."
+                required
+                placeholder="type Car,Bike,Bus etc."
                 id="vehicleType"
                 name="vehicle"
                 value={vehicle}
                 onChange={(e) => setVehicle(e.target.value)}
                 className="border bg-gray-200 border-gray-200 rounded-lg p-2 mt-1 w-full text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-               
             </div>
 
             <div>
@@ -231,7 +210,7 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
                 Number of Seats :
               </label>
               <input
-              required
+                required
                 type="number"
                 id="numberOfSeats"
                 name="seats"
@@ -242,14 +221,11 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
             </div>
 
             <div>
-              <label
-                htmlFor="fare"
-                className="block text-xl font-medium "
-              >
+              <label htmlFor="fare" className="block text-xl font-medium ">
                 Fare :
               </label>
               <input
-              required
+                required
                 type="number"
                 id="fare"
                 name="fare"
@@ -261,7 +237,9 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
 
             <div className="flex gap-4 mt-4">
               <button
-                 onClick={() => {handleSubmit}}
+                onClick={() => {
+                  handleSubmit;
+                }}
                 type="submit"
                 className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
@@ -281,8 +259,6 @@ const simplifiedWaypoints = simplifiedPoints.map(point => [point.x, point.y]);
       </div>
     </div>
   );
-}
-
-
+};
 
 export default DriverForm;
