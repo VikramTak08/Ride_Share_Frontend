@@ -4,13 +4,13 @@ import DriverList from "./Components/DriverList";
 // import Footer from "./Components/Footer";
 import Rider from "./Components/Rider";
 import Profile from "./Components/Profile";
-import Login from "./Components/Login";
-import SignUp from "./Components/SignUp";
+//import Login from "./Components/Login";
+//import SignUp from "./Components/SignUp";
 import Status from "./Components/Status";
 import DriverForm from "./Components/DriverForm";
 import Home from "./Components/Home";
 import Driver from "./Components/Driver";
-import Practice from "./Components/Practice";
+//import Practice from "./Components/Practice";
 import { useEffect, useState } from "react";
 //import { useAuth0 } from "@auth0/auth0-react";
  import Loader from "./Components/Loader";
@@ -41,9 +41,9 @@ function App() {
           <div className="flex-grow  ">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/practice" element={<Practice />} />
+              {/* <Route path="/login" element={<Login />} /> */}
+              {/* <Route path="/signup" element={<SignUp />} /> */}
+              {/* <Route path="/practice" element={<Practice />} /> */}
               <Route path="/:nickname" element={<Profile />} />
               <Route path="/driverform" element={<DriverForm />} />
               <Route path="/rider" element={<Rider />} />
