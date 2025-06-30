@@ -12,9 +12,9 @@ import Home from "./Components/Home";
 import Driver from "./Components/Driver";
 //import Practice from "./Components/Practice";
 import { useEffect, useState } from "react";
-//import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
  import Loader from "./Components/Loader";
-//import Start from "./Components/Start";
+import Start from "./Components/Start";
 // import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 function App() {
@@ -24,13 +24,13 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  //const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   return loading ? (
     <Loader />
     
   ) : 
- // isAuthenticated ? 
+  isAuthenticated ? 
   (
     <div>
       <div className="flex-col min-h-100 gap-1">
@@ -57,10 +57,10 @@ function App() {
       </div>
     </div>
   ) 
- // : (
-  //  <Start />
+  : (
+    <Start />
     
- //);
+ );
 }
 
 export default App;
